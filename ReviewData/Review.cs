@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace ReviewRepository.Models
+namespace ReviewData
 {
-    public class ReviewEFModel
+    public class Review
     {
         public int CustomerId { get; set; }
 
