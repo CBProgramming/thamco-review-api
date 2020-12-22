@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace ReviewData
+namespace ReviewService.Models
 {
-    public class Review
+    public class ReviewDto
     {
         public int CustomerId { get; set; }
 
@@ -11,8 +15,6 @@ namespace ReviewData
         public int Rating { get; set; }
 
         public string ReviewText { get; set; }
-
-        public bool Visible { get; set; }
 
         public DateTime TimeStamp { get; set; }
     }

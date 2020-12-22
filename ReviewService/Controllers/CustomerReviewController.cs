@@ -26,19 +26,19 @@ namespace ReviewService.Controllers
         }
 
         [HttpPost]
-        public Task<IActionResult> Create([FromBody] ReviewModel model)
+        public Task<IActionResult> Create([FromBody] ReviewDto model)
         {
             throw new NotImplementedException();
         }
 
         [HttpPut]
-        public Task<IActionResult> Edit([FromBody] ReviewModel customerDto)
+        public Task<IActionResult> Edit([FromBody] ReviewDto customerDto)
         {
             throw new NotImplementedException();
         }
 
         [HttpDelete]
-        public Task<IActionResult> Delete(string reviewId)
+        public Task<IActionResult> Delete(int customerId, int productId)
         {
             throw new NotImplementedException();
         }
