@@ -4,9 +4,11 @@ using System.Text;
 
 namespace ReviewRepository.Models
 {
-    public class ReviewEFModel
+    public class ReviewModel
     {
         public int CustomerId { get; set; }
+
+        public string CustomerName { get; set; }
 
         public int ProductId { get; set; }
 

@@ -9,7 +9,13 @@ namespace ReviewData
     {
         public DbSet<Review> Reviews { get; set; }
 
+        public DbSet<Purchase> Purchases { get; set; }
+
         public ReviewDb(DbContextOptions<ReviewDb> options) : base(options)
+        {
+        }
+
+        public ReviewDb()
         {
         }
 
@@ -22,8 +28,13 @@ namespace ReviewData
         {
             base.OnModelCreating(builder);
 
+            builder.HasDefaultSchema("reviews");
+
             builder.Entity<Review>()
                    .HasKey(r => new { r.CustomerId, r.ProductId });
+
+            builder.Entity<Purchase>()
+                   .HasKey(p => new { p.CustomerId, p.ProductId });
         }
     }
 }

@@ -7,14 +7,24 @@ namespace ReviewRepository
 {
     public interface IReviewRepository
     {
-        Task<ReviewEFModel> GetReview(string reviewId);
+        ReviewModel GetReview(int customerId, int productId, bool staff);
 
-        Task<IList<ReviewEFModel>> GetCustomerReviews(int customerId, bool? visible);
+        Task<IList<ReviewModel>> GetReviewsByCustomerId(int customerId, bool? visible);
 
-        Task<bool> NewReview(ReviewEFModel review);
+        Task<IList<ReviewModel>> GetReviewsByProductId(int productId, bool? visible);
 
-        Task<bool> EditReview(ReviewEFModel review);
+        Task<bool> NewReview(ReviewModel review);
 
-        Task<bool> DeleteReview(string reviewId);
+        Task<bool> EditReview(ReviewModel review);
+
+        Task<bool> DeleteReview(int customerId, int productId);
+
+        Task<bool> NewPurchases(PurchaseModel purchases);
+
+        Task<bool> ReviewExists(int customerId, int productId);
+
+        Task<bool> PurchaseExists(int customerId, int productId);
+
+        Task<bool> HideReview(int customerId, int productId);
     }
 }
