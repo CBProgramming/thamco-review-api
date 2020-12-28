@@ -69,6 +69,13 @@ namespace ReviewService
                 .RequireAssertion(context =>
                 context.User.HasClaim(c => c.Type == "client_id" && c.Value == "customer_web_app"))
                 .Build());
+
+                OptionsBuilderConfigurationExtensions.AddPolicy("StaffOnly", policy =>
+                policy.AddAuthenticationSchemes("StaffAuth")
+                .RequireAuthenticatedUser()
+                .RequireAssertion(context =>
+                context.User.HasClaim(c => c.Type == "client_id" && c.Value == "customer_management_web_app"))
+                .Build());
             });
 
                 services.AddControllers();
