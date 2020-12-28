@@ -103,6 +103,7 @@ namespace ReviewRepository
                 try
                 {
                     var review = _mapper.Map<Review>(reviewModel);
+                    review.Visible = true;
                     _context.Add(review);
                     await _context.SaveChangesAsync();
                     return true;

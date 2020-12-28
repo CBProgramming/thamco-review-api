@@ -59,23 +59,51 @@ namespace ReviewService.Controllers
             return CreateOrEdit(review);
         }
 
-        private async Task<IActionResult> CreateOrEdit([FromBody] ReviewDto review)
+        private async Task<IActionResult> CreateOrEdit([FromBody] ReviewDto reviewDto)
         {
-            if (await _reviewRepo.PurchaseExists(review.CustomerId, review.ProductId))
+            if (!ValidReview(reviewDto))
             {
-                if (await _reviewRepo.ReviewExists(review.CustomerId, review.ProductId))
+                return UnprocessableEntity();
+            }
+            if (await _reviewRepo.PurchaseExists(reviewDto.CustomerId, reviewDto.ProductId))
+            {
+                var review = _reviewRepo.GetReview(reviewDto.CustomerId, reviewDto.ProductId, staff: false);
+                if (review != null && !review.Visible)
                 {
-                    if (await _reviewRepo.EditReview(_mapper.Map<ReviewModel>(review)))
+                    return NotFound();
+                }
+                reviewDto.TimeStamp = ValidateDate(reviewDto.TimeStamp);
+                if (review == null)
+                {
+                    if (await _reviewRepo.NewReview(_mapper.Map<ReviewModel>(reviewDto)))
                     {
                         return Ok();
                     }
                 }
-                if (await _reviewRepo.NewReview(_mapper.Map<ReviewModel>(review)))
+                if (await _reviewRepo.EditReview(_mapper.Map<ReviewModel>(reviewDto)))
                 {
                     return Ok();
                 }
             }
             return NotFound();
+        }
+
+        private bool ValidReview(ReviewDto reviewDto)
+        {
+            return !string.IsNullOrEmpty(reviewDto.ReviewText)
+                && reviewDto.Rating >= 0
+                && reviewDto.Rating <= 5;
+        }
+
+        private DateTime ValidateDate(DateTime orderDate)
+        {
+            //if date is over 7 days old, or a future date, set date to now (7 days chosen arbitrarily as it would 
+            //likely be a business decision above my position)
+            if (DateTime.Now.Ticks - orderDate.Ticks > (TimeSpan.TicksPerDay * 7) || orderDate > DateTime.Now)
+            {
+                return DateTime.Now;
+            }
+            return orderDate;
         }
 
         [HttpDelete]

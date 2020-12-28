@@ -35,6 +35,53 @@ namespace ReviewData
 
             builder.Entity<Purchase>()
                    .HasKey(p => new { p.CustomerId, p.ProductId });
+
+            builder.Entity<Purchase>()
+                .HasData(
+                new Purchase
+                {
+                    CustomerId = 1,
+                    ProductId = 1
+                },
+                new Purchase
+                {
+                    CustomerId = 1,
+                    ProductId = 2
+                },
+                new Purchase
+                {
+                    CustomerId = 1,
+                    ProductId = 3
+                },
+                new Purchase
+                {
+                    CustomerId = 2,
+                    ProductId = 3
+                },
+                new Purchase
+                {
+                    CustomerId = 2,
+                    ProductId = 4
+                },
+                new Purchase
+                {
+                    CustomerId = 3,
+                    ProductId = 5
+                }
+            );
+
+            builder.Entity<Review>()
+                .HasData(
+                new Review
+                {
+                    CustomerId = 1,
+                    ProductId = 1,
+                    CustomerName = "CustomerName",
+                    Rating = 3,
+                    ReviewText = "Good",
+                    TimeStamp = new DateTime(),
+                    Visible = true
+                });
         }
     }
 }
