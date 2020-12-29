@@ -14,6 +14,7 @@ namespace ReviewRepository
     {
         private readonly ReviewDb _context;
         private readonly IMapper _mapper;
+        private readonly string AnonString = "Anonymised";
 
         public ReviewRepository(ReviewDb context, IMapper mapper)
         {
@@ -122,22 +123,63 @@ namespace ReviewRepository
 
         public async Task<IList<ReviewModel>> GetReviewsByCustomerId(int customerId, bool? visible = true)
         {
-            return _mapper.Map<List<ReviewModel>>(_context.Reviews.Where(r => r.CustomerId == customerId && r.Visible == visible));
+            return _context.Reviews.Where(r => r.CustomerId == customerId && r.Visible == visible)
+                .Join(_context.Customers,
+                r => r.CustomerId,
+                c => c.CustomerId,
+                (review, customer) => new ReviewModel
+                {
+                    CustomerId = review.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    ProductId = review.ProductId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText,
+                    Visible = review.Visible
+                })
+                .Where(r => r.CustomerName != AnonString)
+                .ToList();
         }
 
         public async Task<IList<ReviewModel>> GetReviewsByProductId(int productId, bool? visible = true)
         {
-            return _mapper.Map<List<ReviewModel>>(_context.Reviews.Where(r => r.ProductId == productId && r.Visible == visible));
+            return _context.Reviews.Where(r => r.ProductId == productId && r.Visible == visible)
+                .Join(_context.Customers,
+                r => r.CustomerId,
+                c => c.CustomerId,
+                (review, customer) => new ReviewModel
+                {
+                    CustomerId = review.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    ProductId = review.ProductId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText,
+                    Visible = review.Visible
+                })
+                .Where(r => r.CustomerName != AnonString)
+                .ToList();
         }
 
         public ReviewModel GetReview(int customerId, int productId, bool staff = false)
         {
-            var review = _context.Reviews.Where(r => r.CustomerId == customerId && r.ProductId == productId).FirstOrDefault();
+            var review = _context.Reviews.Where(r => r.CustomerId == customerId && r.ProductId == productId)
+                .Join(_context.Customers,
+                r => r.CustomerId,
+                c => c.CustomerId,
+                (review, customer) => new ReviewModel
+                {
+                    CustomerId = review.CustomerId,
+                    CustomerName = customer.CustomerName,
+                    ProductId = review.ProductId,
+                    Rating = review.Rating,
+                    ReviewText = review.ReviewText,
+                    Visible = review.Visible
+                })
+                .FirstOrDefault();
             if (review == null || (!staff && review.Visible == false))
             {
                 return null;
             }
-            return _mapper.Map<ReviewModel>(review);
+            return review;
         }
 
         public async Task<bool> ReviewExists(int customerId, int productId)
@@ -218,7 +260,7 @@ namespace ReviewRepository
             }
             try
             {
-                customer.CustomerName = "Anonymised";
+                customer.CustomerName = AnonString;
                 await _context.SaveChangesAsync();
                 return true;
             }
