@@ -51,8 +51,9 @@ namespace ReviewRepository
                     try
                     {
                         review.Rating = reviewModel.Rating;
-                        review.ReviewText = review.ReviewText;
-                        review.TimeStamp = review.TimeStamp;
+                        review.ReviewText = reviewModel.ReviewText;
+                        review.TimeStamp = reviewModel.TimeStamp;
+                        review.ReviewText = reviewModel.ReviewText;
                         await _context.SaveChangesAsync();
                         return true;
                     }
@@ -134,6 +135,7 @@ namespace ReviewRepository
                     ProductId = review.ProductId,
                     Rating = review.Rating,
                     ReviewText = review.ReviewText,
+                    TimeStamp = review.TimeStamp,
                     Visible = review.Visible
                 })
                 .Where(r => r.CustomerName != AnonString)
@@ -153,6 +155,7 @@ namespace ReviewRepository
                     ProductId = review.ProductId,
                     Rating = review.Rating,
                     ReviewText = review.ReviewText,
+                    TimeStamp = review.TimeStamp,
                     Visible = review.Visible
                 })
                 .Where(r => r.CustomerName != AnonString)
@@ -172,6 +175,7 @@ namespace ReviewRepository
                     ProductId = review.ProductId,
                     Rating = review.Rating,
                     ReviewText = review.ReviewText,
+                    TimeStamp = review.TimeStamp,
                     Visible = review.Visible
                 })
                 .FirstOrDefault();
@@ -268,6 +272,11 @@ namespace ReviewRepository
             {
                 return false;
             }
+        }
+
+        public async Task<bool> ValidAuthId(int customerId, string authId)
+        {
+            return _context.Customers.Any(c => c.CustomerId == customerId && c.CustomerAuthId == authId);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace ReviewService.Controllers
             return UnprocessableEntity();
         }
 
-        [HttpDelete]
+        [HttpDelete("{customerId}")]
         public async Task<IActionResult> Delete([FromRoute] int customerId)
         {
             if (await _reviewRepo.AnonymiseCustomer(customerId))

@@ -32,5 +32,7 @@ namespace ReviewRepository
         Task<bool> EditCustomer(CustomerModel customer);
 
         Task<bool> AnonymiseCustomer(int customerId);
+
+        Task<bool> ValidAuthId(int customerId, string authId);
     }
 }

@@ -19,6 +19,7 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using ReviewRepository;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ReviewService
 {
@@ -38,7 +39,13 @@ namespace ReviewService
         public void ConfigureServices(IServiceCollection services)
         {
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
-            services.AddAuthentication()
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultForbidScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer()
                 .AddJwtBearer("CustomerAuth", options =>
                 {
                     options.Authority = Configuration.GetValue<string>("CustomerAuthServerUrl");
@@ -78,7 +85,7 @@ namespace ReviewService
 
                 OptionsBuilderConfigurationExtensions.AddPolicy("StaffOnly", policy =>
                 policy.AddAuthenticationSchemes("StaffAuth")
-                .RequireAuthenticatedUser()
+                //.RequireAuthenticatedUser()
                 .RequireAssertion(context =>
                 context.User.HasClaim(c => c.Type == "client_id" && c.Value == "customer_management_web_app"))
                 .Build());

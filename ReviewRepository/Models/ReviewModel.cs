@@ -17,5 +17,7 @@ namespace ReviewRepository.Models
         public string ReviewText { get; set; }
 
         public bool Visible { get; set; }
+
+        public DateTime TimeStamp { get; set; }
     }
 }

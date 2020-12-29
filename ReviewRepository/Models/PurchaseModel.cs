@@ -10,6 +10,6 @@ namespace ReviewRepository.Models
 
         public string CustomerAuthId { get; set; }
 
-        public List<ProductModel> OrderedItems { get; set; }
+        public IList<ProductModel> OrderedItems { get; set; }
     }
 }

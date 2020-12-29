@@ -11,6 +11,6 @@ namespace ReviewService.Models
 
         public string CustomerAuthId { get; set; }
 
-        public List<ProductDto> OrderedItems { get; set; }
+        public IList<ProductDto> OrderedItems { get; set; }
     }
 }
