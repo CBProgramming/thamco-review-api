@@ -26,5 +26,11 @@ namespace ReviewRepository
         Task<bool> PurchaseExists(int customerId, int productId);
 
         Task<bool> HideReview(int customerId, int productId);
+
+        Task<bool> NewCustomer(CustomerModel customer);
+
+        Task<bool> EditCustomer(CustomerModel customer);
+
+        Task<bool> AnonymiseCustomer(int customerId);
     }
 }

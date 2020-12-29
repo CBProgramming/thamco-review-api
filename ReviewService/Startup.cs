@@ -42,12 +42,12 @@ namespace ReviewService
                 .AddJwtBearer("CustomerAuth", options =>
                 {
                     options.Authority = Configuration.GetValue<string>("CustomerAuthServerUrl");
-                    options.Audience = "customer_ordering_api";
+                    options.Audience = "review_api";
                 })
                 .AddJwtBearer("StaffAuth", options =>
                 {
                     options.Authority = Configuration.GetValue<string>("StaffAuthServerUrl");
-                    options.Audience = "customer_ordering_api";
+                    options.Audience = "review_api";
                 });
 
             services.AddAuthorization(OptionsBuilderConfigurationExtensions =>
@@ -61,6 +61,12 @@ namespace ReviewService
                 policy.AddAuthenticationSchemes("CustomerAuth")
                 .RequireAssertion(context =>
                 context.User.HasClaim(c => c.Type == "client_id" && c.Value == "customer_ordering_api"))
+                .Build());
+
+                OptionsBuilderConfigurationExtensions.AddPolicy("CustomerAccountAPIOnly", policy =>
+                policy.AddAuthenticationSchemes("CustomerAuth")
+                .RequireAssertion(context =>
+                context.User.HasClaim(c => c.Type == "client_id" && c.Value == "customer_account_api"))
                 .Build());
 
                 OptionsBuilderConfigurationExtensions.AddPolicy("CustomerOnly", policy =>

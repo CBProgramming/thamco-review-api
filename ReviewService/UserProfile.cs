@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ReviewData;
 using ReviewRepository.Models;
 using ReviewService.Models;
 using System;
@@ -18,6 +19,12 @@ namespace ReviewService
             CreateMap<PurchaseModel, PurchaseDto>();
             CreateMap<ReviewDto, ReviewModel>();
             CreateMap<ReviewModel, ReviewDto>();
+            CreateMap<Review, ReviewModel>();
+            CreateMap<ReviewModel, Review>();
+            CreateMap<CustomerDto, CustomerModel>();
+            CreateMap<CustomerModel, CustomerDto>();
+            CreateMap<CustomerModel, Customer>();
+            CreateMap<Customer, CustomerModel>();
         }
     }
 }

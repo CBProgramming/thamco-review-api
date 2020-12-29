@@ -11,6 +11,8 @@ namespace ReviewData
 
         public DbSet<Purchase> Purchases { get; set; }
 
+        public DbSet<Customer> Customers { get; set; }
+
         public ReviewDb(DbContextOptions<ReviewDb> options) : base(options)
         {
         }
@@ -35,6 +37,11 @@ namespace ReviewData
 
             builder.Entity<Purchase>()
                    .HasKey(p => new { p.CustomerId, p.ProductId });
+
+            builder.Entity<Customer>()
+                .Property(c => c.CustomerId)
+                // key is always provided
+                .ValueGeneratedNever();
 
             builder.Entity<Purchase>()
                 .HasData(
@@ -76,7 +83,6 @@ namespace ReviewData
                 {
                     CustomerId = 1,
                     ProductId = 1,
-                    CustomerName = "CustomerName",
                     Rating = 3,
                     ReviewText = "Good",
                     TimeStamp = new DateTime(),

@@ -51,7 +51,6 @@ namespace ReviewRepository
                     {
                         review.Rating = reviewModel.Rating;
                         review.ReviewText = review.ReviewText;
-                        review.CustomerName = review.CustomerName;
                         review.TimeStamp = review.TimeStamp;
                         await _context.SaveChangesAsync();
                         return true;
@@ -89,6 +88,11 @@ namespace ReviewRepository
 
             }
             return false;
+        }
+
+        private bool CustomerExists(int customerId)
+        {
+            return _context.Customers.Any(c => c.CustomerId == customerId);
         }
 
         public async Task<bool> PurchaseExists(int customerId, int productId)
@@ -158,6 +162,70 @@ namespace ReviewRepository
                 }
             }
             return false;
+        }
+
+        public async Task<bool> NewCustomer(CustomerModel newCustomer)
+        {
+            if (newCustomer == null)
+            {
+                return false;
+            }
+            try
+            {
+                var customer = _mapper.Map<Customer>(newCustomer);
+                _context.Add(customer);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> EditCustomer(CustomerModel editedCustomer)
+        {
+            if (editedCustomer == null)
+            {
+                return false;
+            }
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == editedCustomer.CustomerId);
+            if (customer == null)
+            {
+                return false;
+            }
+            try
+            {
+                if (customer.CustomerName != editedCustomer.CustomerName && !string.IsNullOrEmpty(editedCustomer.CustomerName))
+                {
+                    customer.CustomerName = editedCustomer.CustomerName;
+                    await _context.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> AnonymiseCustomer(int customerId)
+        {
+            var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == customerId);
+            if (customer == null)
+            {
+                return false;
+            }
+            try
+            {
+                customer.CustomerName = "Anonymised";
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return false;
+            }
         }
     }
 }
