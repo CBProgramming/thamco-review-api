@@ -10,8 +10,8 @@ using ReviewData;
 namespace ReviewData.Migrations
 {
     [DbContext(typeof(ReviewDb))]
-    [Migration("20201228180414_SeedDataAdded")]
-    partial class SeedDataAdded
+    [Migration("20201230103325_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,6 +21,54 @@ namespace ReviewData.Migrations
                 .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
+
+            modelBuilder.Entity("ReviewData.Customer", b =>
+                {
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CustomerAuthId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CustomerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CustomerId");
+
+                    b.ToTable("Customers");
+
+                    b.HasData(
+                        new
+                        {
+                            CustomerId = 1,
+                            CustomerAuthId = "f756701c-4336-47b1-8317-a16e84bd0059",
+                            CustomerName = "Chris Burrell"
+                        },
+                        new
+                        {
+                            CustomerId = 2,
+                            CustomerAuthId = "07dc5dfc-9dad-408c-ba81-ff6a8dd3aec2",
+                            CustomerName = "Paul Mitchell"
+                        },
+                        new
+                        {
+                            CustomerId = 3,
+                            CustomerAuthId = "1e3998f7-4ca6-42e0-9c78-8cb030f65f47",
+                            CustomerName = "Jack Ferguson"
+                        },
+                        new
+                        {
+                            CustomerId = 4,
+                            CustomerAuthId = "bce3bb9c-5947-4265-8a7d-8588655bbabe",
+                            CustomerName = "Carter Ridgeway"
+                        },
+                        new
+                        {
+                            CustomerId = 5,
+                            CustomerAuthId = "fb9e3941-6830-4387-be15-eeac14848c01",
+                            CustomerName = "Karl Hall"
+                        });
+                });
 
             modelBuilder.Entity("ReviewData.Purchase", b =>
                 {
@@ -75,9 +123,6 @@ namespace ReviewData.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CustomerName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -99,7 +144,6 @@ namespace ReviewData.Migrations
                         {
                             CustomerId = 1,
                             ProductId = 1,
-                            CustomerName = "CustomerName",
                             Rating = 3,
                             ReviewText = "Good",
                             TimeStamp = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
