@@ -48,31 +48,31 @@ namespace ReviewData
                 new Customer
                 {
                     CustomerId = 1,
-                    CustomerAuthId = "f756701c-4336-47b1-8317-a16e84bd0059",
+                    CustomerAuthId = "b45727f0-bf10-40dc-a687-f5cd025630f2",
                     CustomerName = "Chris Burrell"
                 },
                 new Customer
                 {
                     CustomerId = 2,
-                    CustomerAuthId = "07dc5dfc-9dad-408c-ba81-ff6a8dd3aec2",
+                    CustomerAuthId = "286fa26e-ae5f-4c5a-b89d-7301fb247d78",
                     CustomerName = "Paul Mitchell"
                 },
                 new Customer
                 {
                     CustomerId = 3,
-                    CustomerAuthId = "1e3998f7-4ca6-42e0-9c78-8cb030f65f47",
+                    CustomerAuthId = "b477a6e4-6607-43c9-8ea0-c2367a5b0360",
                     CustomerName = "Jack Ferguson"
                 },
                 new Customer
                 {
                     CustomerId = 4,
-                    CustomerAuthId = "bce3bb9c-5947-4265-8a7d-8588655bbabe",
+                    CustomerAuthId = "9fe723cf-7ac2-4b51-a79a-9e5813fb306a",
                     CustomerName = "Carter Ridgeway"
                 },
                 new Customer
                 {
                     CustomerId = 5,
-                    CustomerAuthId = "fb9e3941-6830-4387-be15-eeac14848c01",
+                    CustomerAuthId = "727c783f-ede7-4e53-a365-f8c830e327f4",
                     CustomerName = "Karl Hall"
                 });
 
