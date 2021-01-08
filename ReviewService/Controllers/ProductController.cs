@@ -31,11 +31,24 @@ namespace ReviewService.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] PurchaseDto purchases)
         {
+            if(!ValidPurchases(purchases))
+            {
+                return UnprocessableEntity();
+            }
             if (await _reviewRepo.NewPurchases(_mapper.Map<PurchaseModel>(purchases)))
             {
                 return Ok();
             }
             return NotFound();
+        }
+
+        private bool ValidPurchases(PurchaseDto purchases)
+        {
+            return purchases != null
+                && purchases.CustomerId > 0
+                && !string.IsNullOrEmpty(purchases.CustomerAuthId)
+                && purchases.OrderedItems != null
+                && purchases.OrderedItems.Count > 0;
         }
     }
 }

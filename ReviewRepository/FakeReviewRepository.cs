@@ -1,4 +1,5 @@
-﻿using ReviewRepository.Models;
+﻿using ReviewData;
+using ReviewRepository.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -10,6 +11,7 @@ namespace ReviewRepository
     {
         public bool Succeeds = true;
         public CustomerModel Customer;
+        public PurchaseModel Purchases;
 
         public async Task<bool> AnonymiseCustomer(int customerId)
         {
@@ -61,9 +63,14 @@ namespace ReviewRepository
             return await NewOrEditCustomer(customer);
         }
 
-        public Task<bool> NewPurchases(PurchaseModel purchases)
+        public async Task<bool> NewPurchases(PurchaseModel purchases)
         {
-            throw new NotImplementedException();
+            if (Succeeds)
+            {
+                Purchases = purchases;
+                return true;
+            }
+            return false;
         }
 
         public Task<bool> NewReview(ReviewModel review)

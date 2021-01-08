@@ -19,7 +19,6 @@ namespace ReviewTests
     public class CustomerAccountControllerTests
     {
         private CustomerDto customerDto;
-        private IConfiguration config;
         private CustomerModel customerRepoModel;
         private FakeReviewRepository fakeRepo;
         private Mock<IReviewRepository> mockRepo;
@@ -48,16 +47,6 @@ namespace ReviewTests
                 CustomerId = 1,
                 CustomerAuthId = "fakeauthid",
                 CustomerName = "Fake Name"
-            };
-        }
-
-        private CustomerDto GetEditedDetailsDto()
-        {
-            return new CustomerDto
-            {
-                CustomerId = 1,
-                CustomerAuthId = "fakeauthid",
-                CustomerName = "New Name"
             };
         }
 
