@@ -17,7 +17,7 @@ namespace ReviewService.Controllers
     [Authorize(Policy = "StaffOnly")]
     public class StaffReviewController : ControllerBase
     {
-        private readonly ILogger<CustomerReviewController> _logger;
+        private readonly ILogger<StaffReviewController> _logger;
         private readonly IReviewRepository _reviewRepo;
         private readonly IMapper _mapper;
 
@@ -39,7 +39,7 @@ namespace ReviewService.Controllers
             {
                 return Ok(_mapper.Map<List<ReviewDto>>(await _reviewRepo.GetReviewsByProductId(productId ?? 0, visible: visible)));
             }
-            var review = _mapper.Map<ReviewDto>(_reviewRepo.GetReview(customerId??0, productId ?? 0, staff: true));
+            var review = _mapper.Map<ReviewDto>(await _reviewRepo.GetReview(customerId??0, productId ?? 0, staff: true));
             if (review != null)
             {
                 return Ok(review);
@@ -50,6 +50,10 @@ namespace ReviewService.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int customerId, int productId)
         {
+            if (customerId <= 0 || productId <= 0)
+            {
+                return UnprocessableEntity();
+            }
             if (await _reviewRepo.HideReview(customerId, productId))
             {
                 return Ok();

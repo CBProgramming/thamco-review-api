@@ -75,9 +75,16 @@ namespace ReviewRepository
             return new List<ReviewModel>();
         }
 
-        public Task<bool> HideReview(int customerId, int productId)
+        public async Task<bool> HideReview(int customerId, int productId)
         {
-            throw new NotImplementedException();
+            if (Succeeds 
+                && ReviewModel != null 
+                && ReviewModel.CustomerId == customerId 
+                && ReviewModel.ProductId == productId)
+            {
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> NewCustomer(CustomerModel customer)
