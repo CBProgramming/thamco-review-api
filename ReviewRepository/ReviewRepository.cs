@@ -92,11 +92,6 @@ namespace ReviewRepository
             return false;
         }
 
-        private bool CustomerExists(int customerId)
-        {
-            return _context.Customers.Any(c => c.CustomerId == customerId);
-        }
-
         public async Task<bool> PurchaseExists(int customerId, int productId)
         {
             return _context.Purchases.Any(p => p.ProductId == productId && p.CustomerId == customerId);
@@ -162,7 +157,7 @@ namespace ReviewRepository
                 .ToList();
         }
 
-        public ReviewModel GetReview(int customerId, int productId, bool staff = false)
+        public async Task<ReviewModel> GetReview(int customerId, int productId, bool staff = false)
         {
             var review = _context.Reviews.Where(r => r.CustomerId == customerId && r.ProductId == productId)
                 .Join(_context.Customers,

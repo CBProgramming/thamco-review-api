@@ -7,7 +7,7 @@ namespace ReviewRepository
 {
     public interface IReviewRepository
     {
-        ReviewModel GetReview(int customerId, int productId, bool staff);
+        Task<ReviewModel> GetReview(int customerId, int productId, bool staff);
 
         Task<IList<ReviewModel>> GetReviewsByCustomerId(int customerId, bool? visible);
 

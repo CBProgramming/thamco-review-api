@@ -10,8 +10,10 @@ namespace ReviewRepository
     public class FakeReviewRepository : IReviewRepository
     {
         public bool Succeeds = true;
+        public bool PurchaseDoesExist = true;
         public CustomerModel Customer;
         public PurchaseModel Purchases;
+        public ReviewModel ReviewModel;
 
         public async Task<bool> AnonymiseCustomer(int customerId)
         {
@@ -23,9 +25,14 @@ namespace ReviewRepository
             return false;
         }
 
-        public Task<bool> DeleteReview(int customerId, int productId)
+        public async Task<bool> DeleteReview(int customerId, int productId)
         {
-            throw new NotImplementedException();
+            if (Succeeds && customerId == ReviewModel.CustomerId && productId == ReviewModel.ProductId)
+            {
+                ReviewModel = null;
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> EditCustomer(CustomerModel customer)
@@ -33,24 +40,39 @@ namespace ReviewRepository
             return await NewOrEditCustomer(customer);
         }
 
-        public Task<bool> EditReview(ReviewModel review)
+        public async Task<bool> EditReview(ReviewModel review)
         {
-            throw new NotImplementedException();
+            return await NewOrEditReview(review);
         }
 
-        public ReviewModel GetReview(int customerId, int productId, bool staff)
+        public async Task<ReviewModel> GetReview(int customerId, int productId, bool staff)
         {
-            throw new NotImplementedException();
+            if(Succeeds 
+                && ReviewModel != null 
+                && customerId == ReviewModel.CustomerId 
+                && productId == ReviewModel.ProductId)
+            {
+                return ReviewModel;
+            }
+            return null;
         }
 
-        public Task<IList<ReviewModel>> GetReviewsByCustomerId(int customerId, bool? visible)
+        public async Task<IList<ReviewModel>> GetReviewsByCustomerId(int customerId, bool? visible)
         {
-            throw new NotImplementedException();
+            if (Succeeds && ReviewModel != null && ReviewModel.CustomerId == customerId)
+            {
+                return new List<ReviewModel> { ReviewModel };
+            }
+            return new List<ReviewModel>();
         }
 
-        public Task<IList<ReviewModel>> GetReviewsByProductId(int productId, bool? visible)
+        public async Task<IList<ReviewModel>> GetReviewsByProductId(int productId, bool? visible)
         {
-            throw new NotImplementedException();
+            if (Succeeds && ReviewModel != null && ReviewModel.ProductId == productId)
+            {
+                return new List<ReviewModel> { ReviewModel };
+            }
+            return new List<ReviewModel>();
         }
 
         public Task<bool> HideReview(int customerId, int productId)
@@ -73,14 +95,14 @@ namespace ReviewRepository
             return false;
         }
 
-        public Task<bool> NewReview(ReviewModel review)
+        public async Task<bool> NewReview(ReviewModel review)
         {
-            throw new NotImplementedException();
+            return await NewOrEditReview(review);
         }
 
-        public Task<bool> PurchaseExists(int customerId, int productId)
+        public async Task<bool> PurchaseExists(int customerId, int productId)
         {
-            throw new NotImplementedException();
+            return Succeeds && PurchaseDoesExist;
         }
 
         public Task<bool> ReviewExists(int customerId, int productId)
@@ -88,9 +110,14 @@ namespace ReviewRepository
             throw new NotImplementedException();
         }
 
-        public Task<bool> ValidAuthId(int customerId, string authId)
+        public async Task<bool> ValidAuthId(int customerId, string authId)
         {
-            throw new NotImplementedException();
+            if (Succeeds)
+            {
+                return customerId == Customer.CustomerId
+                && authId == Customer.CustomerAuthId;
+            }
+            return false;
         }
 
         private async Task<bool> NewOrEditCustomer(CustomerModel customer)
@@ -109,6 +136,15 @@ namespace ReviewRepository
                 {
                     Customer.CustomerName = customer.CustomerName;
                 }
+            }
+            return Succeeds;
+        }
+
+        private async Task<bool> NewOrEditReview(ReviewModel review)
+        {
+            if (Succeeds)
+            {
+                ReviewModel = review;
             }
             return Succeeds;
         }

@@ -55,7 +55,7 @@ namespace ReviewService.Controllers
             {
                 return Ok(_mapper.Map<List<ReviewDto>>(await _reviewRepo.GetReviewsByCustomerId(customerId??0, visible: true)));
             }
-            var review = _mapper.Map<ReviewDto>(_reviewRepo.GetReview(customerId??0, productId??0, staff: false));
+            var review = _mapper.Map<ReviewDto>(await _reviewRepo.GetReview(customerId??0, productId??0, staff: false));
             if (review != null)
             {
                 return Ok(review);
@@ -88,7 +88,7 @@ namespace ReviewService.Controllers
             }
             if (await _reviewRepo.PurchaseExists(reviewDto.CustomerId, reviewDto.ProductId))
             {
-                var review = _reviewRepo.GetReview(reviewDto.CustomerId, reviewDto.ProductId, staff: false);
+                var review = await _reviewRepo.GetReview(reviewDto.CustomerId, reviewDto.ProductId, staff: false);
                 if (review != null && !review.Visible)
                 {
                     return NotFound();
