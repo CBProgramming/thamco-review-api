@@ -21,7 +21,7 @@ namespace ReviewService.Controllers
         private readonly IReviewRepository _reviewRepo;
         private readonly IMapper _mapper;
 
-        public StaffReviewController(ILogger<CustomerReviewController> logger, IReviewRepository reviewRepo, IMapper mapper)
+        public StaffReviewController(ILogger<StaffReviewController> logger, IReviewRepository reviewRepo, IMapper mapper)
         {
             _logger = logger;
             _reviewRepo = reviewRepo;
