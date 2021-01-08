@@ -31,7 +31,7 @@ namespace ReviewService.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] CustomerDto customer)
         {
-            if (customer != null)
+            if (customer != null && !string.IsNullOrEmpty(customer.CustomerName))
             {
                 if (await _reviewRepo.NewCustomer(_mapper.Map<CustomerModel>(customer)))
                 {
