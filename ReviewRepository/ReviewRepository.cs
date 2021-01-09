@@ -14,7 +14,7 @@ namespace ReviewRepository
     {
         private readonly ReviewDb _context;
         private readonly IMapper _mapper;
-        private readonly string AnonString = "Anonymised";
+        public readonly string AnonString = "Anonymised";
 
         public ReviewRepository(ReviewDb context, IMapper mapper)
         {
@@ -68,11 +68,19 @@ namespace ReviewRepository
 
         public async Task<bool> NewPurchases(PurchaseModel purchases)
         {
+            if (purchases == null 
+                || purchases.OrderedItems == null 
+                ||purchases.OrderedItems.Count <=0)
+            {
+                return false;
+            }
+            List<int> tracker = new List<int>();
             try
             {
                 foreach (ProductModel product in purchases.OrderedItems)
                 {
-                    if (!await PurchaseExists(purchases.CustomerId, product.ProductId))
+                    if (!await PurchaseExists(purchases.CustomerId, product.ProductId)
+                        && !tracker.Contains(product.ProductId))
                     {
                         var purchase = new Purchase
                         {
@@ -80,9 +88,13 @@ namespace ReviewRepository
                             ProductId = product.ProductId
                         };
                         _context.Add(purchase);
+                        tracker.Add(product.ProductId);
                     }
                 }
-                await _context.SaveChangesAsync();
+                if (tracker.Count > 0)
+                {
+                    await _context.SaveChangesAsync();
+                }
                 return true;
             }
             catch (DbUpdateConcurrencyException)
@@ -99,7 +111,7 @@ namespace ReviewRepository
 
         public async Task<bool> NewReview(ReviewModel reviewModel)
         {
-            if (reviewModel != null)
+            if (reviewModel != null && ! await ReviewExists(reviewModel.CustomerId, reviewModel.ProductId))
             {
                 try
                 {
@@ -231,7 +243,7 @@ namespace ReviewRepository
                 return false;
             }
             var customer = _context.Customers.FirstOrDefault(c => c.CustomerId == editedCustomer.CustomerId);
-            if (customer == null)
+            if (customer == null || customer.CustomerAuthId != editedCustomer.CustomerAuthId)
             {
                 return false;
             }

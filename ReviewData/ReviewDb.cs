@@ -7,11 +7,11 @@ namespace ReviewData
 {
     public class ReviewDb : DbContext
     {
-        public DbSet<Review> Reviews { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
 
-        public DbSet<Purchase> Purchases { get; set; }
+        public virtual DbSet<Purchase> Purchases { get; set; }
 
-        public DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
 
         public ReviewDb(DbContextOptions<ReviewDb> options) : base(options)
         {
