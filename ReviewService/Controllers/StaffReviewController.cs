@@ -56,7 +56,6 @@ namespace ReviewService.Controllers
             }
             if (await _reviewRepo.HideReview(customerId, productId))
             {
-                var pipelineTrigger = "PIPELINE TRIGGER";
                 return Ok();
             }
             return NotFound();
